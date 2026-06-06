@@ -12,11 +12,10 @@
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">Geo<span>tripster</span></a>
 
     <nav>
-      <a href="#about">About</a>
-      <a href="#hikes">Adventures</a>
-      <a href="#hikes">Hikes</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#newsletter">Newsletter</a>
+      <a href="#about" data-i18n="nav-about">About</a>
+      <a href="#hikes" data-i18n="nav-trips">Trips</a>
+      <a href="#reviews" data-i18n="nav-reviews">Reviews</a>
+      <a href="#newsletter" data-i18n="nav-newsletter">Newsletter</a>
     </nav>
 
     <div class="header-right">
@@ -32,8 +31,16 @@
           </svg>
         </a>
       </div>
-      <span class="lang-toggle">RU</span>
-      <a href="#" class="btn-cta" onclick="openModal(event)">Go Out</a>
+      <div class="lang-dropdown">
+        <button class="lang-current" onclick="toggleLangDropdown(event)">
+          EN <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <ul class="lang-options" id="langOptions">
+          <li onclick="setLanguage('en')" class="active">EN</li>
+          <li onclick="setLanguage('ka')">KA</li>
+        </ul>
+      </div>
+      <a href="#newsletter" class="btn-cta" data-i18n="btn-cta">Go Out</a>
       <div class="burger" onclick="toggleMobileNav()">
         <span></span><span></span><span></span>
       </div>
