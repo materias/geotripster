@@ -284,6 +284,12 @@ function applyTranslations(lang) {
     const key = el.getAttribute('data-i18n-placeholder');
     if (t[key] !== undefined) el.placeholder = t[key];
   });
+  document.querySelectorAll('[data-name-en]').forEach(el => {
+    el.textContent = lang === 'ka' ? (el.dataset.nameKa || el.dataset.nameEn) : el.dataset.nameEn;
+  });
+  document.querySelectorAll('[data-desc-en]').forEach(el => {
+    el.textContent = lang === 'ka' ? (el.dataset.descKa || el.dataset.descEn) : el.dataset.descEn;
+  });
   refreshWeatherLabels(lang);
 }
 

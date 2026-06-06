@@ -31,102 +31,67 @@
 
     <div class="hikes-grid">
 
-      <div class="hike-card reveal">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/mravaltskaro.jpg"
-          alt="Mravaltskaro" loading="lazy" />
-        <div class="hike-info" data-weather="mravaltskaro" data-lat="41.37" data-lon="45.38" data-start="2025-06-14" data-end="2025-06-16">
-          <div class="hike-dates">14–16 Jun 2026</div>
-          <div class="hike-name" data-i18n="hike-mravaltskaro-name">Mravaltskaro</div>
-          <p class="hike-desc" data-i18n="hike-mravaltskaro-desc">A turquoise reservoir nestled in the volcanic highlands of Kvemo Kartli — kayaking, hiking, and wild camping at 1,900 m.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
+      <?php
+      $trips = new WP_Query( [
+          'post_type'      => 'trip',
+          'posts_per_page' => -1,
+          'meta_key'       => 'trip_order',
+          'orderby'        => 'meta_value_num',
+          'order'          => 'ASC',
+      ] );
 
-      <div class="hike-card reveal reveal-delay-1">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/kazbegi.jpg"
-          alt="Kazbegi Ridge" loading="lazy" />
-        <div class="hike-info" data-weather="kazbegi" data-lat="42.65" data-lon="44.64" data-start="2025-11-07" data-end="2025-11-09">
-          <div class="hike-dates">7–9 Nov 2026</div>
-          <div class="hike-name" data-i18n="hike-kazbegi-name">Kazbegi Ridge</div>
-          <p class="hike-desc" data-i18n="hike-kazbegi-desc">High-altitude traverse with views of Gergeti Trinity Church and the Greater Caucasus.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
+      $delay_classes = [ '', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3' ];
+      $i = 0;
 
-      <div class="hike-card reveal reveal-delay-1">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/svaneti-koruldi-lake.jpg"
-          alt="Svaneti Traverse" loading="lazy" />
-        <div class="hike-info" data-weather="svaneti" data-lat="43.05" data-lon="42.73" data-start="2025-07-20" data-end="2025-07-22">
-          <div class="hike-dates">20–22 Jul 2026</div>
-          <div class="hike-name" data-i18n="hike-svaneti-name">Svaneti Traverse</div>
-          <p class="hike-desc" data-i18n="hike-svaneti-desc">Classic Mestia–Ushguli route through medieval tower villages and alpine meadows.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
+      if ( $trips->have_posts() ) :
+          while ( $trips->have_posts() ) : $trips->the_post();
+              $id           = get_the_ID();
+              $name_en      = get_the_title();
+              $name_ka      = get_post_meta( $id, 'trip_name_ka', true );
+              $desc_en      = get_post_meta( $id, 'trip_desc_en', true );
+              $desc_ka      = get_post_meta( $id, 'trip_desc_ka', true );
+              $dates        = get_post_meta( $id, 'trip_dates_display', true );
+              $weather_id   = get_post_meta( $id, 'trip_weather_id', true );
+              $lat          = get_post_meta( $id, 'trip_lat', true );
+              $lon          = get_post_meta( $id, 'trip_lon', true );
+              $start        = get_post_meta( $id, 'trip_start_date', true );
+              $end          = get_post_meta( $id, 'trip_end_date', true );
+              $img_position = get_post_meta( $id, 'trip_img_position', true );
+              $thumb_url    = get_the_post_thumbnail_url( $id, 'large' );
+              $delay        = $delay_classes[ $i % 4 ];
+      ?>
+      <div class="hike-card reveal <?php echo esc_attr( $delay ); ?>">
+          <img class="hike-img"
+              src="<?php echo esc_url( $thumb_url ); ?>"
+              alt="<?php echo esc_attr( $name_en ); ?>"
+              loading="<?php echo $i === 0 ? 'eager' : 'lazy'; ?>"
+              <?php if ( $img_position ) echo 'style="object-position: ' . esc_attr( $img_position ) . ';"'; ?> />
+          <div class="hike-info"
+              data-weather="<?php echo esc_attr( $weather_id ); ?>"
+              data-lat="<?php echo esc_attr( $lat ); ?>"
+              data-lon="<?php echo esc_attr( $lon ); ?>"
+              data-start="<?php echo esc_attr( $start ); ?>"
+              data-end="<?php echo esc_attr( $end ); ?>">
+              <div class="hike-dates"><?php echo esc_html( $dates ); ?></div>
+              <div class="hike-name"
+                  data-name-en="<?php echo esc_attr( $name_en ); ?>"
+                  data-name-ka="<?php echo esc_attr( $name_ka ); ?>">
+                  <?php echo esc_html( $name_en ); ?>
+              </div>
+              <p class="hike-desc"
+                  data-desc-en="<?php echo esc_attr( $desc_en ); ?>"
+                  data-desc-ka="<?php echo esc_attr( $desc_ka ); ?>">
+                  <?php echo esc_html( $desc_en ); ?>
+              </p>
+              <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
+          </div>
       </div>
-
-      <div class="hike-card reveal reveal-delay-2">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/martvili-canyon.jpg"
-          alt="Martvili Canyon" loading="lazy" />
-        <div class="hike-info" data-weather="martvili" data-lat="42.42" data-lon="42.38" data-start="2025-08-08" data-end="2025-08-10">
-          <div class="hike-dates">8–10 Aug 2026</div>
-          <div class="hike-name" data-i18n="hike-martvili-name">Martvili Canyon</div>
-          <p class="hike-desc" data-i18n="hike-martvili-desc">Emerald gorges, boat rides through limestone canyons, and ancient monasteries hidden in the forest of Samegrelo.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
-
-      <div class="hike-card reveal reveal-delay-3">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/tusheti-omalo.jpg"
-          alt="Tusheti" loading="lazy" />
-        <div class="hike-info" data-weather="tusheti" data-lat="42.37" data-lon="45.37" data-start="2025-09-06" data-end="2025-09-08">
-          <div class="hike-dates">6–8 Sep 2026</div>
-          <div class="hike-name" data-i18n="hike-tusheti-name">Tusheti High Road</div>
-          <p class="hike-desc" data-i18n="hike-tusheti-desc">Remote wilderness route through the wildest and most remote corner of Georgia.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
-
-      <div class="hike-card reveal">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/tbilisi-sea-sunset.jpg"
-          alt="Tbilisi Sea SUP" loading="lazy" />
-        <div class="hike-info" data-weather="sup" data-lat="41.74" data-lon="44.93" data-start="2025-07-18" data-end="2025-07-19">
-          <div class="hike-dates">18–19 Jul 2026</div>
-          <div class="hike-name" data-i18n="hike-sup-name">Tbilisi Sea SUP</div>
-          <p class="hike-desc" data-i18n="hike-sup-desc">Rent a SUP board, drift across still water, and watch the sun sink behind the Caucasus hills in one of Tbilisi's most dramatic sunsets.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
-
-      <div class="hike-card reveal reveal-delay-1">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/vardzia.jpg"
-          alt="Vardzia" loading="lazy" />
-        <div class="hike-info" data-weather="vardzia" data-lat="41.38" data-lon="43.28" data-start="2025-08-22" data-end="2025-08-23">
-          <div class="hike-dates">22–23 Aug 2026</div>
-          <div class="hike-name" data-i18n="hike-vardzia-name">Vardzia</div>
-          <p class="hike-desc" data-i18n="hike-vardzia-desc">A 12th-century cave city carved into Erusheti Mountain — over 300 interconnected chambers across 13 levels, built during Queen Tamar's reign with frescoes and a water system still intact.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
-
-      <div class="hike-card reveal reveal-delay-2">
-        <img class="hike-img"
-          src="<?php echo get_template_directory_uri(); ?>/images/kakheti-alaverdi-monastery.jpg"
-          alt="Kakheti" loading="lazy"
-          style="object-position: center 60%;" />
-        <div class="hike-info" data-weather="kakheti" data-lat="41.92" data-lon="45.48" data-start="2025-10-03" data-end="2025-10-04">
-          <div class="hike-dates">3–4 Oct 2026</div>
-          <div class="hike-name" data-i18n="hike-kakheti-name">Kakheti Wine Tour</div>
-          <p class="hike-desc" data-i18n="hike-kakheti-desc">Georgia's wine heartland — ancient qvevri cellars, the 11th-century Alaverdi Cathedral, and sun-drenched Alazani Valley vineyards at harvest season.</p>
-          <a href="#newsletter" class="link-more" data-i18n="link-learn-more">Learn more</a>
-        </div>
-      </div>
+      <?php
+              $i++;
+          endwhile;
+          wp_reset_postdata();
+      endif;
+      ?>
 
     </div>
   </section>
