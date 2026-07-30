@@ -9,8 +9,9 @@ Custom WordPress theme for a Georgian adventure tours website.
 - Bilingual interface (English / Georgian) — built with a custom i18n JS system, no plugins
 - Live weather data per trip via [Open-Meteo Archive API](https://open-meteo.com/)
 - Scroll reveal animations, custom CSS design system
-- Static export deployed on Netlify
+- Deployed as a static site → [geotripster.net](https://geotripster.net)
+- Booking form wired to a serverless function that notifies Telegram
 
 ## Stack
 
-WordPress · PHP · HTML · CSS · JavaScript
+WordPress · PHP · CSS · JavaScript

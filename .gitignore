@@ -2,3 +2,6 @@
 *.zip
 node_modules/
 index.html
+
+# Local Netlify folder
+.netlify

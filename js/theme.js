@@ -43,11 +43,33 @@ function handleSubscribe(e) {
   e.target.reset();
 }
 
-function handleBooking(e) {
+async function handleBooking(e) {
   e.preventDefault();
-  alert(currentLang === 'ka' ? 'მოთხოვნა გაიგზავნა! 24 საათში დაგიკავშირდებით.' : "Your request has been sent! We'll be in touch within 24 hours.");
-  closeModal();
-  e.target.reset();
+  const form = e.target;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalLabel = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = currentLang === 'ka' ? 'იგზავნება…' : 'Sending…';
+
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  try {
+    const res = await fetch('/.netlify/functions/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Request failed');
+
+    alert(currentLang === 'ka' ? 'მოთხოვნა გაიგზავნა! 24 საათში დაგიკავშირდებით.' : "Your request has been sent! We'll be in touch within 24 hours.");
+    closeModal();
+    form.reset();
+  } catch (err) {
+    alert(currentLang === 'ka' ? 'რაღაც არასწორად მოხდა. სცადეთ თავიდან.' : 'Something went wrong. Please try again.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+  }
 }
 
 // Mobile nav toggle
