@@ -9,6 +9,7 @@ add_action( 'after_setup_theme', 'geotripster_setup' );
 function geotripster_scripts() {
     wp_enqueue_style( 'geotripster-style', get_stylesheet_uri(), [], '1.0.0' );
     wp_enqueue_script( 'geotripster-js', get_template_directory_uri() . '/js/theme.js', [], '1.0.0', true );
+    wp_enqueue_script( 'geotripster-agent-chat', get_template_directory_uri() . '/js/agent-chat.js', [], '1.0.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'geotripster_scripts' );
 
